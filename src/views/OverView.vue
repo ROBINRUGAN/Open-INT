@@ -2,35 +2,65 @@
 import TopoGraph from '@/components/TopoGraph.vue'
 import FlowGraph from '@/components/FlowGraph.vue'
 import HistoryGraph from '@/components/HistoryGraph.vue'
+import EatGraph from '@/components/EatGraph.vue'
+import DropGraph from '@/components/DropGraph.vue'
+import QueueGraph from '@/components/QueueGraph.vue'
+import SwitchList from '@/components/SwitchList.vue'
 </script>
 
 <template>
   <el-row :gutter="20">
     <el-col :span="10">
       <div class="three-column" style="display: flex; flex-direction: column">
-        <el-row :gutter="20" style="margin-bottom: 20px; height: 160%">
+        <el-row :gutter="20" style="margin-bottom: 20px; height: 100%">
           <el-col :span="24">
-            <div class="graph-left-one">
-              <TopoGraph />
+            <div class="graph-left-one"><TopoGraph /></div>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div class="graph-left-two"><HistoryGraph /></div>
+          </el-col>
+          <el-col :span="12">
+            <div class="graph-left-three"><FlowGraph /></div>
+          </el-col>
+        </el-row>
+      </div>
+    </el-col>
+    <el-col :span="7">
+      <div class="three-column" style="display: flex; flex-direction: column">
+        <el-row :gutter="20" style="margin-bottom: 20px">
+          <el-col :span="24">
+            <div class="graph-center-one">
+              <EatGraph />
             </div>
           </el-col>
         </el-row>
+
         <el-row :gutter="20">
-          <el-col :span="12">
-            <div class="graph-left-two">
-              <HistoryGraph />
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="graph-left-three">
-              <FlowGraph />
+          <el-col :span="24">
+            <div class="graph-center-two">
+              <QueueGraph />
             </div>
           </el-col>
         </el-row>
       </div>
     </el-col>
-    <el-col :span="7"><div class="three-column"></div></el-col>
-    <el-col :span="7"><div class="three-column"></div></el-col>
+    <el-col :span="7"
+      ><div class="three-column">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <SwitchList />
+          </el-col>
+
+          <el-col :span="24">
+            <div class="graph-center-two">
+              <DropGraph />
+            </div>
+          </el-col>
+        </el-row></div
+    ></el-col>
   </el-row>
 </template>
 
@@ -82,5 +112,36 @@ import HistoryGraph from '@/components/HistoryGraph.vue'
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.graph-center-one {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.graph-center-two {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.switch-list {
+  background-color: #ffffff;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  padding-bottom: 0;
 }
 </style>

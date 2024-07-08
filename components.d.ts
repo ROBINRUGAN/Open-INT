@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DropGraph: typeof import('./src/components/DropGraph.vue')['default']
+    EatGraph: typeof import('./src/components/EatGraph.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -19,9 +21,12 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     FlowGraph: typeof import('./src/components/FlowGraph.vue')['default']
     HistoryGraph: typeof import('./src/components/HistoryGraph.vue')['default']
+    QueueGraph: typeof import('./src/components/QueueGraph.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./src/components/SideBar.vue')['default']
+    SwitchCard: typeof import('./src/components/SwitchCard.vue')['default']
+    SwitchList: typeof import('./src/components/SwitchList.vue')['default']
     Topo: typeof import('./src/components/topo.vue')['default']
     TopoDemo: typeof import('./src/components/TopoDemo.vue')['default']
     TopoGraph: typeof import('./src/components/TopoGraph.vue')['default']

@@ -14,7 +14,7 @@ let now = dayjs()
 
 function initData() {
   now = dayjs()
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 15; i++) {
     data.push(randomData())
   }
 }
@@ -23,7 +23,7 @@ function randomData() {
   now = now.add(1, 'second')
   return {
     name: now.format('HH:mm:ss'),
-    value: [now.format('HH:mm:ss'), Math.floor(Math.random() * 30) + 10]
+    value: [now.format('HH:mm:ss'), Math.floor(Math.random() * 20) + 10]
   }
 }
 
@@ -31,6 +31,9 @@ const initChart = () => {
   if (chartContainer.value && !myChart) {
     myChart = echarts.init(chartContainer.value)
     const option = {
+      grid: {
+        left: 50
+      },
       title: {
         text: '网络流量监控图',
         left: 'center',
@@ -43,7 +46,8 @@ const initChart = () => {
           return item.name
         }),
         axisLabel: {
-          color: '#000'
+          color: '#333',
+          showMaxLabel: true
         },
         axisLine: {
           show: true,
@@ -58,7 +62,7 @@ const initChart = () => {
       yAxis: {
         type: 'value',
         axisLabel: {
-          color: '#000'
+          color: '#333'
         },
         axisLine: {
           show: true,
@@ -77,7 +81,7 @@ const initChart = () => {
           data: data.map(function (item: any) {
             return item.value
           }),
-          smooth: false,
+          smooth: true,
           lineStyle: {
             color: '#83bff6'
           },

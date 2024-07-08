@@ -23,6 +23,7 @@ watch(
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
+    collapse="true"
   >
     <el-menu-item index="/home" @click="router.push('/home')">
       <el-icon><Odometer /></el-icon>
@@ -37,6 +38,7 @@ watch(
 <style scoped>
 .el-menu {
   border: none;
+  z-index: 10000;
 }
 a {
   text-decoration: none;

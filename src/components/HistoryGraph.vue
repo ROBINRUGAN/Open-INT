@@ -12,93 +12,49 @@ let myChart: echarts.ECharts | null = null
 const initChart = () => {
   if (chartContainer.value && !myChart) {
     myChart = echarts.init(chartContainer.value)
-    const dataAxis = Array.from({ length: 25 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
-    // 假设只有从00:00到18:00的数据，其余时间留空
-    const data = [
-      15,
-      20,
-      18,
-      21,
-      24,
-      30,
-      40,
-      35,
-      33,
-      31,
-      25,
-      28,
-      32,
-      36,
-      34,
-      23,
-      22,
-      19,
-      17,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ]
+    // 生成 25 个任务的编号
+    const taskIds = Array.from({ length: 25 }, (_, i) => `任务${i + 1}`)
+    // 生成随机任务完成时间
+    const completionTimes = Array.from({ length: 25 }, () => Math.floor(Math.random() * 30 + 30))
 
     const option = {
+      grid: {
+        left: 58
+      },
       title: {
-        text: '任务完成情况',
+        text: '任务完成时间统计',
         left: 'center',
         top: 20
       },
       tooltip: {
-        trigger: 'item' // Ensures the tooltip is triggered when hovering over an item
+        trigger: 'axis'
       },
       xAxis: {
-        data: dataAxis,
+        type: 'category',
+        data: taskIds,
         axisLabel: {
-          inside: false,
-          color: '#000',
-          interval: 5 // 每6小时显示一个刻度
-        },
-        axisTick: {
-          show: true
-        },
-        axisLine: {
-          show: true
-        },
-        z: 10
+          color: '#333'
+        }
       },
       yAxis: {
-        axisLine: {
-          show: true
-        },
-        axisTick: {
-          show: false
-        },
+        type: 'value',
         axisLabel: {
-          color: '#000'
-        },
-        max: 50
+          formatter: '{value} s',
+          color: '#333'
+        }
       },
       series: [
         {
+          name: '完成时间',
           type: 'bar',
-          showBackground: true,
+          data: completionTimes,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#83bff6' },
-              { offset: 0.5, color: '#188df0' },
-              { offset: 1, color: '#188df0' }
+              { offset: 0, color: '#2378f7' },
+              { offset: 0.3, color: '#2378f7' },
+              { offset: 1, color: '#83bff6' }
             ])
-          },
-          emphasis: {
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#2378f7' },
-                { offset: 0.7, color: '#2378f7' },
-                { offset: 1, color: '#83bff6' }
-              ])
-            }
-          },
-          data: data
+          }
         }
       ]
     }
