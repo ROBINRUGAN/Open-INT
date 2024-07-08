@@ -20,16 +20,17 @@ import SideBar from '@/components/SideBar.vue'
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  height: 100%;
 }
+</style>
+<style scoped>
 .el-header {
-  background-color: #85baff;
+  background-color: #8dbfff;
   color: #ffffff;
   text-align: center;
   line-height: 60px;
   font-size: 24px;
   font-weight: bold;
-  margin: 10px 10px 0px 10px;
+  margin: 10px 20px 0px 20px;
   border-radius: 10px;
 }
 

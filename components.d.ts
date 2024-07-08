@@ -17,10 +17,13 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElRow: typeof import('element-plus/es')['ElRow']
+    FlowGraph: typeof import('./src/components/FlowGraph.vue')['default']
+    HistoryGraph: typeof import('./src/components/HistoryGraph.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./src/components/SideBar.vue')['default']
     Topo: typeof import('./src/components/topo.vue')['default']
+    TopoDemo: typeof import('./src/components/TopoDemo.vue')['default']
     TopoGraph: typeof import('./src/components/TopoGraph.vue')['default']
   }
 }
