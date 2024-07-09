@@ -13,9 +13,9 @@ const initChart = () => {
   if (chartContainer.value && !myChart) {
     myChart = echarts.init(chartContainer.value)
     // 生成 25 个任务的编号
-    const taskIds = Array.from({ length: 25 }, (_, i) => `任务${i + 1}`)
+    const taskIds = Array.from({ length: 20 }, (_, i) => `任务${i + 1}`)
     // 生成随机任务完成时间
-    const completionTimes = Array.from({ length: 25 }, () => Math.floor(Math.random() * 30 + 30))
+    const completionTimes = Array.from({ length: 20 }, () => Math.floor(Math.random() * 30 + 30))
 
     const option = {
       grid: {
@@ -33,7 +33,8 @@ const initChart = () => {
         type: 'category',
         data: taskIds,
         axisLabel: {
-          color: '#333'
+          color: '#333',
+          showMaxLabel: true
         }
       },
       yAxis: {

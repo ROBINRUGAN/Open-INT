@@ -21,7 +21,7 @@ const option = {
   },
   series: [
     {
-      zoom: 0.9,
+      zoom: 0.8,
       type: 'graph',
       layout: 'none',
       data: [
