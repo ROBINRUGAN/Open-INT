@@ -1,19 +1,20 @@
 <template>
   <div
     ref="chartContainer"
-    style="width: 100%; height: 540px; margin-left: 5%; padding-left: 5px"
+    style="width: 100%; height: 247px; margin-left: 5%; padding-left: 5px"
   ></div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watchEffect } from 'vue'
 import * as echarts from 'echarts'
-
+import { useChartStore } from '@/stores/charts'
+const chartStore = useChartStore()
 const chartContainer = ref<HTMLElement | null>(null)
 let myChart: echarts.ECharts | null = null
 let data = {
   categories: [] as string[],
-  values: [] as number[]
+  values: [] as string[]
 }
 
 function formatTime(date: Date) {
@@ -29,7 +30,7 @@ function initData() {
     now.setSeconds(now.getSeconds() - 1)
     const time = formatTime(now)
     data.categories.unshift(time)
-    data.values.unshift(98 + Math.random() * 2) // Simulate random queue occupancy around 98%
+    data.values.unshift((98 + Math.random() * 2).toFixed(2)) // Simulate random queue occupancy around 98%
   }
 }
 
@@ -37,7 +38,7 @@ function addData(shift = true) {
   const now = new Date()
   const time = formatTime(now)
   data.categories.push(time)
-  data.values.push(98 + Math.random() * 2) // Simulate random queue occupancy around 98%
+  data.values.push((98 + Math.random() * 2).toFixed(2)) // Simulate random queue occupancy around 98%
 
   if (shift) {
     data.categories.shift()
@@ -59,8 +60,11 @@ function addData(shift = true) {
 function initChart() {
   myChart = echarts.init(chartContainer.value)
   const option = {
+    grid: {
+      left: 50
+    },
     title: {
-      text: '网络队列占用情况',
+      text: `${chartStore.currentSwitch} 的网络队列占用情况`,
       left: 'center',
       top: 20
     },
@@ -117,21 +121,30 @@ function initChart() {
 
   myChart.setOption(option)
 }
-
+function refreshCharts() {
+  if (myChart) {
+    myChart.dispose()
+    data = {
+      categories: [],
+      values: []
+    }
+    initData()
+    initChart()
+  }
+}
 onMounted(() => {
   initData()
   initChart()
   setInterval(() => {
     addData()
   }, 1000) // Update data every second
-
-  watchEffect(() => {
-    window.addEventListener('resize', () => {
-      myChart?.resize()
-    })
+  chartStore.registerRefreshFunction('queue', refreshCharts)
+})
+watchEffect(() => {
+  window.addEventListener('resize', () => {
+    myChart?.resize()
   })
 })
-
 onUnmounted(() => {
   if (myChart) {
     myChart.dispose()

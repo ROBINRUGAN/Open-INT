@@ -38,7 +38,6 @@ watch(
 <style scoped>
 .el-menu {
   border: none;
-  z-index: 10000;
 }
 a {
   text-decoration: none;

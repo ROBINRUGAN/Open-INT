@@ -27,7 +27,7 @@ const option = {
       data: [
         {
           name: 'Controller',
-          symbol: 'image:///images/host.png',
+          symbol: 'image:///images/switch.png',
           symbolSize: [60, 60],
           x: 170,
           y: 90,

@@ -15,6 +15,10 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     })
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 9001 // 可选，如果你想指定一个不同的端口
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

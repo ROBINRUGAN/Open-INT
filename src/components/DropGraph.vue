@@ -1,16 +1,18 @@
 <template>
   <div
     ref="chartContainer"
-    style="width: 100%; height: 540px; margin-left: 5%; padding-left: 5px"
+    style="width: 100%; height: 247px; margin-left: 5%; padding-left: 5px"
   ></div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watchEffect } from 'vue'
 import * as echarts from 'echarts'
+import { useChartStore } from '@/stores/charts'
 
-const chartContainer = ref<HTMLElement | null>(null)
-let myChart: echarts.ECharts | null = null
+let chartContainer = ref<HTMLElement | null>(null)
+const chartStore = useChartStore()
+let dropCharts: echarts.ECharts | null = null
 let data = {
   categories: [] as string[],
   values: [] as string[]
@@ -29,7 +31,7 @@ function initData() {
     now.setSeconds(now.getSeconds() - 1)
     const time = formatTime(now)
     data.categories.unshift(time)
-    data.values.unshift(Math.floor(Math.random() * 10).toString()) // Simulate random packet loss
+    data.values.unshift(Math.floor(Math.random() * 6).toString()) // Simulate random packet loss
   }
 }
 
@@ -44,7 +46,7 @@ function addData(shift = true) {
     data.values.shift()
   }
 
-  myChart!.setOption({
+  dropCharts!.setOption({
     xAxis: {
       data: data.categories
     },
@@ -57,10 +59,11 @@ function addData(shift = true) {
 }
 
 function initChart() {
-  myChart = echarts.init(chartContainer.value)
+  dropCharts = echarts.init(chartContainer.value)
+
   const option = {
     title: {
-      text: '网络丢包数量监控',
+      text: `${chartStore.currentSwitch} 的网络丢包数量监控`,
       left: 'center',
       top: 20
     },
@@ -112,8 +115,19 @@ function initChart() {
       }
     ]
   }
+  dropCharts.setOption(option)
+}
 
-  myChart.setOption(option)
+function refreshCharts() {
+  if (dropCharts) {
+    dropCharts.dispose()
+    data = {
+      categories: [],
+      values: []
+    }
+    initData()
+    initChart()
+  }
 }
 
 onMounted(() => {
@@ -122,20 +136,20 @@ onMounted(() => {
   setInterval(() => {
     addData()
   }, 1000) // Update data every second
-
-  watchEffect(() => {
-    window.addEventListener('resize', () => {
-      myChart?.resize()
-    })
+  chartStore.registerRefreshFunction('drop', refreshCharts)
+})
+watchEffect(() => {
+  window.addEventListener('resize', () => {
+    dropCharts?.resize()
   })
 })
 
 onUnmounted(() => {
-  if (myChart) {
-    myChart.dispose()
+  if (dropCharts) {
+    dropCharts.dispose()
   }
   window.removeEventListener('resize', () => {
-    myChart?.resize()
+    dropCharts?.resize()
   })
 })
 </script>

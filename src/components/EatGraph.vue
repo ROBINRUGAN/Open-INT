@@ -1,14 +1,15 @@
 <template>
   <div
     ref="chartContainer"
-    style="width: 100%; height: 540px; margin-left: 5%; padding-left: 5px"
+    style="width: 100%; height: 247px; margin-left: 5%; padding-left: 5px"
   ></div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watchEffect } from 'vue'
 import * as echarts from 'echarts'
-
+import { useChartStore } from '@/stores/charts'
+const chartStore = useChartStore()
 const chartContainer = ref<HTMLElement | null>(null)
 let myChart: echarts.ECharts | null = null
 let data = {
@@ -23,13 +24,25 @@ function formatTime(date: Date) {
   return `${hours}:${minutes}:${seconds}`
 }
 
+function refreshCharts() {
+  if (myChart) {
+    myChart.dispose()
+    data = {
+      categories: [],
+      values: []
+    }
+    initData()
+    initChart()
+  }
+}
+
 function initData() {
   const now = new Date()
   for (let i = 0; i < 15; i++) {
     now.setSeconds(now.getSeconds() - 1)
     const time = formatTime(now)
     data.categories.unshift(time)
-    data.values.unshift((Math.random() * 35 + 60).toString())
+    data.values.unshift((Math.random() * 35 + 60).toFixed(2))
   }
 }
 
@@ -37,7 +50,7 @@ function addData(shift = true) {
   const now = new Date()
   const time = formatTime(now)
   data.categories.push(time)
-  data.values.push((Math.random() * 35 + 60).toString())
+  data.values.push((Math.random() * 35 + 60).toFixed(2))
 
   if (shift) {
     data.categories.shift()
@@ -60,10 +73,10 @@ function initChart() {
   myChart = echarts.init(chartContainer.value)
   const option = {
     grid: {
-      left: 58
+      left: 60
     },
     title: {
-      text: '网络吞吐量监控',
+      text: `${chartStore.currentSwitch} 的网络吞吐量监控`,
       left: 'center',
       top: 20
     },
@@ -131,14 +144,13 @@ onMounted(() => {
   setInterval(() => {
     addData()
   }, 1000) // 每秒更新数据和时间
-
-  watchEffect(() => {
-    window.addEventListener('resize', () => {
-      myChart?.resize()
-    })
+  chartStore.registerRefreshFunction('eat', refreshCharts)
+})
+watchEffect(() => {
+  window.addEventListener('resize', () => {
+    myChart?.resize()
   })
 })
-
 onUnmounted(() => {
   if (myChart) {
     myChart.dispose()

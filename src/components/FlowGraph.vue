@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" style="width: 100%; height: 400px"></div>
+  <div ref="chartContainer" style="width: 100%; height: 320px"></div>
 </template>
 
 <script lang="ts" setup>
@@ -31,6 +31,9 @@ const initChart = () => {
   if (chartContainer.value && !myChart) {
     myChart = echarts.init(chartContainer.value)
     const option = {
+      tooltip: {
+        trigger: 'axis'
+      },
       grid: {
         left: 50
       },
@@ -76,7 +79,7 @@ const initChart = () => {
       },
       series: [
         {
-          name: '数据',
+          name: '网络流量值',
           type: 'line',
           data: data.map(function (item: any) {
             return item.value

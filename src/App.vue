@@ -32,13 +32,14 @@ import SideBar from '@/components/SideBar.vue'
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 1px 1px rgba(0, 0, 0, 0.2);
+  margin-top: -2px;
   border: 1px solid #ebeef5;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  z-index: 10000;
-  padding: 40px 0px 50px 0;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  z-index: 2;
+  padding: 30px 0px 30px 0;
 }
 
 .el-aside {
@@ -49,14 +50,12 @@ import SideBar from '@/components/SideBar.vue'
   height: 100%;
   border-radius: 10px;
   margin-top: 10px;
-  z-index: 10000;
 }
 
 .el-main {
   background-color: #f6faff;
   color: #333;
   text-align: center;
-  line-height: 160px;
   height: 100%;
 }
 .el-container {
