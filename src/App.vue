@@ -5,7 +5,7 @@ import SideBar from '@/components/SideBar.vue'
 
 <template>
   <el-container>
-    <el-header>OpenINT——在线XXXXXXXX系统</el-header>
+    <el-header>OpenINT： 面向数据中心的动态遥测架构</el-header>
     <el-container>
       <el-aside width="fit-content">
         <SideBar />

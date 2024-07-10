@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HistoryGraph from '@/components/HistoryGraph.vue'
 import TopoGraph from '@/components/TopoGraph.vue'
+import { useHistoryStore } from '@/stores/history'
 
 import { ElMessage } from 'element-plus'
 import { ref, onMounted, watchEffect, nextTick } from 'vue'
@@ -17,7 +18,7 @@ const msg7 = ref(false)
 const msg8 = ref(false)
 const msg9 = ref(false)
 const msg10 = ref(false)
-
+const historyStore = useHistoryStore()
 const scrollToBottom = async () => {
   await nextTick()
   if (terminalContent.value) {
@@ -87,8 +88,11 @@ const updateTask = () => {
   setTimeout(() => {
     msg10.value = true
     scrollToBottom()
+    historyStore.addTask(
+      `任务${historyStore.taskIds.length + 1}`,
+      Math.floor(Math.random() * 5 + 20)
+    )
   }, 11800)
-  scrollToBottom()
 }
 
 const createTask = () => {
@@ -188,7 +192,7 @@ const createTask = () => {
                   ===================================================================================
                 </p>
                 <p style="display: flex; justify-content: center; font-weight: bold">
-                  Welcome to OpenINT's CLI!
+                  Welcome to OpenINT CLI!
                 </p>
                 <p style="line-height: 0; margin: 10px 0">
                   ===================================================================================

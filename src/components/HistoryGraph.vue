@@ -3,21 +3,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watchEffect } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, reactive, watch } from 'vue'
 import * as echarts from 'echarts'
-
+import { useHistoryStore } from '@/stores/history'
 const chartContainer = ref<HTMLElement | null>(null)
 let myChart: echarts.ECharts | null = null
+const historyStore = useHistoryStore()
 
 const initChart = () => {
   if (chartContainer.value && !myChart) {
     myChart = echarts.init(chartContainer.value)
-    // 生成 25 个任务的编号
-    const taskIds = Array.from({ length: 20 }, (_, i) => `任务${i + 1}`)
-    // 生成随机任务完成时间
-    const completionTimes = Array.from({ length: 20 }, () => Math.floor(Math.random() * 30 + 30))
 
-    const option = {
+    const option = reactive({
       grid: {
         left: 58
       },
@@ -31,7 +28,7 @@ const initChart = () => {
       },
       xAxis: {
         type: 'category',
-        data: taskIds,
+        data: historyStore.taskIds,
         axisLabel: {
           color: '#333',
           showMaxLabel: true
@@ -48,7 +45,7 @@ const initChart = () => {
         {
           name: '完成时间',
           type: 'bar',
-          data: completionTimes,
+          data: historyStore.completionTimes,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               { offset: 0, color: '#2378f7' },
@@ -58,11 +55,30 @@ const initChart = () => {
           }
         }
       ]
-    }
+    })
 
     myChart.setOption(option)
   }
 }
+
+watch(
+  () => [historyStore.taskIds, historyStore.completionTimes],
+  () => {
+    if (myChart) {
+      myChart.setOption({
+        series: [
+          {
+            data: historyStore.completionTimes
+          }
+        ],
+        xAxis: {
+          data: historyStore.taskIds
+        }
+      })
+    }
+  },
+  { deep: true }
+)
 
 watchEffect(() => {
   window.addEventListener('resize', () => {
@@ -70,7 +86,9 @@ watchEffect(() => {
   })
 })
 
-onMounted(initChart)
+onMounted(() => {
+  initChart()
+})
 
 onUnmounted(() => {
   window.removeEventListener('resize', () => {

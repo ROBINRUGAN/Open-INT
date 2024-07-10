@@ -3,13 +3,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watchEffect } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, reactive, watch } from 'vue'
 import * as echarts from 'echarts'
+import { useTopoStore } from '@/stores/topo'
 
 const chartContainer = ref<HTMLElement | null>(null)
 let myChart: echarts.ECharts | null = null
+const topoStore = useTopoStore()
 
-const option = {
+const option = reactive({
   title: {
     text: '网络拓扑图',
     left: 'center',
@@ -24,66 +26,8 @@ const option = {
       zoom: 0.8,
       type: 'graph',
       layout: 'none',
-      data: [
-        {
-          name: 'Controller',
-          symbol: 'image:///images/host.png',
-          symbolSize: [60, 60],
-          x: 170,
-          y: 90,
-          draggable: true
-        },
-        {
-          name: 'Switch 1',
-          symbol: 'image:///images/switch.png',
-          symbolSize: [60, 60],
-          x: 100,
-          y: 250,
-          draggable: true
-        },
-        {
-          name: 'Switch 2',
-          symbol: 'image:///images/switch.png',
-          symbolSize: [60, 60],
-          x: 170,
-          y: 190,
-          draggable: true
-        },
-        {
-          name: 'Switch 3',
-          symbol: 'image:///images/switch.png',
-          symbolSize: [60, 60],
-          x: 250,
-          y: 250,
-          draggable: true
-        },
-        {
-          name: 'Sender',
-          symbol: 'image:///images/host.png',
-          symbolSize: [60, 60],
-          x: 0,
-          y: 270,
-          draggable: true
-        },
-        {
-          name: 'Receiver',
-          symbol: 'image:///images/host.png',
-          symbolSize: [60, 60],
-          x: 340,
-          y: 270,
-          draggable: true
-        }
-      ],
-      links: [
-        { source: 'Controller', target: 'Switch 1' },
-        { source: 'Controller', target: 'Switch 2' },
-        { source: 'Controller', target: 'Switch 3' },
-        { source: 'Switch 1', target: 'Switch 2' },
-        { source: 'Switch 2', target: 'Switch 3' },
-        { source: 'Switch 3', target: 'Switch 1' },
-        { source: 'Switch 1', target: 'Sender' },
-        { source: 'Switch 3', target: 'Receiver' }
-      ],
+      data: topoStore.threeData,
+      links: topoStore.threeLink,
 
       roam: true,
       label: {
@@ -98,7 +42,7 @@ const option = {
       }
     }
   ]
-}
+})
 
 onMounted(() => {
   if (chartContainer.value) {
@@ -112,6 +56,23 @@ watchEffect(() => {
     myChart?.resize()
   })
 })
+
+watch(
+  () => [topoStore.threeData, topoStore.threeLink],
+  () => {
+    if (myChart) {
+      myChart.setOption({
+        series: [
+          {
+            data: topoStore.threeData,
+            links: topoStore.threeLink
+          }
+        ]
+      })
+    }
+  },
+  { deep: true }
+)
 
 onUnmounted(() => {
   if (myChart) {

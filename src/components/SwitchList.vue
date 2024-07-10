@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import SwitchCard from '@/components/SwitchCard.vue'
+import { useSwitchStore } from '@/stores/switch'
+import { useTopoStore } from '@/stores/topo'
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
 const dialogFormVisible = ref(false)
+const topoStore = useTopoStore()
+const switchStore = useSwitchStore()
 
 const form = reactive({
   ip: '',
@@ -13,7 +17,13 @@ const form = reactive({
 })
 function addSwitch() {
   ElMessage.success('新增交换机成功！')
+  topoStore.addNode()
+  switchStore.addSwitch()
   dialogFormVisible.value = false
+}
+function deleteSwitch() {
+  topoStore.removeNode()
+  switchStore.removeSwitch('Switch 4')
 }
 </script>
 <template>
@@ -21,10 +31,14 @@ function addSwitch() {
     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px">
       <div style="font-size: 18px; font-weight: bold">交换机列表</div>
       <button class="btn" @click="dialogFormVisible = true">新增交换机</button>
+      <button class="btn-trans" @click="deleteSwitch">删除交换机</button>
     </div>
-    <SwitchCard name="Switch 1" ip="192.168.1.1" />
-    <SwitchCard name="Switch 2" ip="192.168.1.2" />
-    <SwitchCard name="Switch 3" ip="192.168.1.3" />
+    <SwitchCard
+      v-for="(item, index) in switchStore.switchData"
+      :key="index"
+      :name="item.name"
+      :ip="item.ip"
+    />
     <br />
     <el-dialog v-model="dialogFormVisible" title="新增交换机" width="500">
       <el-form :model="form">
@@ -79,6 +93,15 @@ function addSwitch() {
   width: 100%;
   border: none;
   overflow: auto;
+}
+
+.btn-trans {
+  background-color: #ffffff;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin-left: 20px;
 }
 
 .switch-list::-webkit-scrollbar {
