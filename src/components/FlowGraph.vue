@@ -35,7 +35,7 @@ const initChart = () => {
         trigger: 'axis'
       },
       grid: {
-        left: 50
+        left: 70
       },
       title: {
         text: '网络流量监控图',
@@ -65,7 +65,8 @@ const initChart = () => {
       yAxis: {
         type: 'value',
         axisLabel: {
-          color: '#333'
+          color: '#333',
+          formatter: '{value} Gbps'
         },
         axisLine: {
           show: true,
