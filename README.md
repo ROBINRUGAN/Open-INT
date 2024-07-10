@@ -1,39 +1,30 @@
-# open-int
+# open-INT：轻量级部署和灵活规划的动态带内网络遥测
 
-This template should help get you started developing with Vue 3 in Vite.
+> 在网络管理的核心环节中，网络测量扮演着至关重要的角色，其目标在于收集和分析网络性能及流量状态。随着数据中心网络管理任务的日益复杂化、网络设备的迅速增加以及网络流量的剧增，对高效的网络测量技术的需求日益迫切。在这样的背景下，带内网络遥测（INT）技术以其卓越的性能和广泛的应用潜力崭露头角，开启了网络测量领域的新篇章。
+>
+> 然而，尽管INT技术具有显著优势，其数据平面遥测架构设计、控制平面遥测规划算法仍然存在不足之处，并影响着整体性能。本项目针对僵化的数据平面遥测架构和加权的遥测路径规划算法进行深入研究，并提出了一个框架：OpenINT。
 
-## Recommended IDE Setup
+## 相关界面
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![alt text](/mdAssets/home.png)
+![alt text](/mdAssets/task.png)
 
-## Type Support for `.vue` Imports in TS
+## 主要贡献
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### **全新的数据平面遥测架构**：
 
-## Customize configuration
+- **目标**：提高资源利用效率和适应性。
+- **方法**：通过重构遥测动作，将其拆分为数据采集、报告上传和端口选择三个子模块。这样的灵活组合使OpenINT能够支持轻量级遥测，无缝切换数据中心网络测量任务。
+- **创新**：引入了一系列用于定义网络测量任务和管理遥测系统的原语，简化了网络管理员的配置工作。
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### **动态权重的遥测编排方案**：
 
-## Project Setup
+- **目标**：规划出最佳的遥测路径，以全覆盖网络并最小化遥测开销。
+- **方法**：提出了动态权重遥测路径规划问题，通过数学定义和NP难问题的分析奠定了未来研究基础。
+- **创新**：将其抽象为ILP模型，并提供了基于启发式的路径规划算法。通过路径合并和提前报告等改进措施，OpenINT在动态权重的情况下展现了出色的优化效果。
 
-```sh
-npm install
-```
+## 相关成果：
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- OpenINT: Dynamic In-Band Network Telemetry with Lightweight Deployment and Flexible Planning. IEEE INFOCOM, 2024.(中国计算机学会 A 类会议)
+- MINT: Empowering Multiple Flow Definition Query for Network-wide Measurement. IEEE ICC, 2023.(中国计算机学会 C 类会议)
+- 国家重点研发课题《多模态网络内生安全原型系统设计与验证》（编号：2023YFB2904005）
